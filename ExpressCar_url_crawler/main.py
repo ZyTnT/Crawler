@@ -61,7 +61,7 @@ def get_picturePage_url(car_type_url):
 
 
 if __name__ == '__main__':
-    url = "http://www.chinaso.com/newssearch/image?q=%E9%80%81%E5%BF%AB%E9%80%92"
+    url = "http://www.chinaso.com/newssearch/image?q=%E9%80%86%E5%90%91%E8%A1%8C%E9%A9%B6"
     picture_url_list = get_picturePage_url(url)
-    filename = "F://快递车照片//url.txt"
+    filename = "C://交通违规图片//逆行/xinwen_url.txt"
     text_save(filename,picture_url_list)
