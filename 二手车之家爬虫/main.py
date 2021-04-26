@@ -1,6 +1,6 @@
-from typing import List
+#from typing import List
 import requests
-from bs4 import BeautifulSoup
+#from bs4 import BeautifulSoup
 import os
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -143,7 +143,7 @@ def get_pictureWeb_url():
 
 
 def download_picture():
-    file = 'C://二手车之家图片'
+    file = 'F://二手车之家图片//'
     for root, dirs, files in os.walk(file):
         # root 表示当前正在访问的文件夹路径
         # dirs 表示该文件夹下的子目录名list
@@ -151,34 +151,42 @@ def download_picture():
         # 遍历文件
         for f in files:
             if f == 'pictureWebUrl.txt':
-                filePath = os.path.join(root, f)
-                data = open(filePath, 'r', encoding='utf-8')
-                for line in data:
-                    try:
-                        srcList = []
-                        driver.get(line)
-                        time.sleep(2)
-                        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-                        time.sleep(3)
-                        elements = driver.find_elements_by_xpath("//div[@id='pic_li']/a/img")
-                        for element in elements:
-                            srcList.append(element.get_attribute('src'))
-                            for src in srcList:
-                                # t = time.time()
-                                # t = str(int(round(t * 1000)))
-                                name = driver.find_element_by_class_name("car-brand-name").text + " " + str(src).split("/")[-1][:-4]
-                                filePath = root + '/' + name + '.jpg'
+                flag = True
+                for root2, dirs2, files2 in os.walk(root):
+                    for f2 in files2:
+                        if '.jpg' in f2:
+                            flag = False
 
-                                if not os.path.exists(filePath):
-                                    img = requests.get(src, headers={
-                                        'User-Agent': 'Mozilla/5`.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36 Edg/87.0.664.75'})
-                                    with open(filePath, "wb") as f:
-                                        f.write(img.content)
-                                        print(name)
-                    except Exception as err:
-                        print(err)
-                        continue
+                if flag == True:
+                    filePath = os.path.join(root, f)
+                    data = open(filePath, 'r', encoding='utf-8')
+                    for line in data:
+                        try:
+                            srcList = []
+                            driver.get(line)
+                            time.sleep(1)
+                            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+                            time.sleep(2)
+                            elements = driver.find_elements_by_xpath("//div[@id='pic_li']/a/img")
+                            for element in elements:
+                                srcList.append(element.get_attribute('src'))
+                                for src in srcList:
+                                    # t = time.time()
+                                    # t = str(int(round(t * 1000)))
+                                    name = driver.find_element_by_class_name("car-brand-name").text + " " + str(src).split("/")[-1][:-4]
+                                    filePath = root + '/' + name + '.jpg'
+
+                                    if not os.path.exists(filePath):
+                                        img = requests.get(src, headers={
+                                            'User-Agent': 'Mozilla/5`.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36 Edg/87.0.664.75'})
+                                        with open(filePath, "wb") as f:
+                                            f.write(img.content)
+                                            print(name)
+                        except Exception as err:
+                            print(err)
+                            continue
 
 
 if __name__ == '__main__':
     download_picture()
+    #copy_emptyDir()
